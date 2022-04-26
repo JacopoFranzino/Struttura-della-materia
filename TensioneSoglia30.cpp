@@ -49,7 +49,7 @@ void TensioneSoglia30()
     TF1 *funz1 = new TF1("funz1", "[0]+[1]*x", 0, 20);
     //funz2->SetParNames("a", "b");
     funz1->SetLineColor(50);
-    funz1->SetRange(490,560);
+    funz1->SetRange(491,560);
     //funz1->SetParameters();
     Canvas->Update();
     gGraph->Fit(funz1, "RM+");
