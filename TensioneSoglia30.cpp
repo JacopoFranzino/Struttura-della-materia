@@ -46,40 +46,40 @@ void TensioneSoglia30()
     gGraph->GetYaxis()->SetTitle("Count ");
     gGraph->Draw("AP");
 
-    TF1 *funz2 = new TF1("funz2", "[0]+[1]*x", 0, 20);
+    TF1 *funz1 = new TF1("funz1", "[0]+[1]*x", 0, 20);
     //funz2->SetParNames("a", "b");
-    funz2->SetLineColor(50);
-    funz2->SetRange(490,560);
+    funz1->SetLineColor(50);
+    funz1->SetRange(490,560);
+    //funz1->SetParameters();
+    Canvas->Update();
+    gGraph->Fit(funz1, "RM+");
+    //string udm[] = {"", "", ""};
+     double a= funz1->GetParameter(0);
+    //double sc=funz2->GetParError(0);
+    double b= funz1->GetParameter(1);
+    //double sd=funz2->GetParError(1);
+
+   cout << "Chi^2:" << funz1->GetChisquare() << ", number of DoF: " << funz1->GetNDF() << " (Probability: " << funz1->GetProb() << ")." << endl;
+    cout << "--------------------------------------------------------------------------------------------------------" << endl;
+    //.........................//
+
+    TF1 *funz2 = new TF1("funz2", "[0]+[1]*x", 0, 20);
+    //funz3->SetParNames("c", "d");
+    funz2->SetLineColor(9);
+    funz2->SetRange(390,472);
     //funz1->SetParameters();
     Canvas->Update();
     gGraph->Fit(funz2, "RM+");
     //string udm[] = {"", "", ""};
-     double a= funz2->GetParameter(0);
+    double c= funz2->GetParameter(0);
     //double sc=funz2->GetParError(0);
-    double b= funz2->GetParameter(1);
+    double d= funz2->GetParameter(1);
     //double sd=funz2->GetParError(1);
 
    cout << "Chi^2:" << funz2->GetChisquare() << ", number of DoF: " << funz2->GetNDF() << " (Probability: " << funz2->GetProb() << ")." << endl;
     cout << "--------------------------------------------------------------------------------------------------------" << endl;
     //.........................//
 
-    TF1 *funz3 = new TF1("funz3", "[0]+[1]*x", 0, 20);
-    //funz3->SetParNames("c", "d");
-    funz3->SetLineColor(9);
-    funz3->SetRange(390,472);
-    //funz1->SetParameters();
-    Canvas->Update();
-    gGraph->Fit(funz3, "RM+");
-    //string udm[] = {"", "", ""};
-    double c= funz3->GetParameter(0);
-    //double sc=funz2->GetParError(0);
-    double d= funz3->GetParameter(1);
-    //double sd=funz2->GetParError(1);
-
-   cout << "Chi^2:" << funz3->GetChisquare() << ", number of DoF: " << funz3->GetNDF() << " (Probability: " << funz3->GetProb() << ")." << endl;
-    cout << "--------------------------------------------------------------------------------------------------------" << endl;
-    //.........................//
-
     double Vs=abs((c-a)/(b-d));
-    cout<<"Tensione soglia da impostare: "<<Vs<<"V"<<endl;
+    cout<<"Tensione soglia: "<<Vs<<"V"<<endl;
 }
