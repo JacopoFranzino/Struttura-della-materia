@@ -11,21 +11,21 @@ void Assorbimento()
 {
   gStyle->SetOptFit(1);
   const int n=;
-  double I0=;
-  double x[] = {};
-  double I[] = {};
+  double Count1[] ={};
+  double Count2[]={};
+  double x[] ={};
+  double I[n];
   double sx[n];
   double sI[n];
-  for(int i=0;i<n;i++){
-    sx[i];
-    sI[i]=sqrt(I[i]);
+  double ER[n];
+  for(int j=0;j<n;j++){
+    sx[j];
+    sI[j]=abs((Count1[j]-Count2[j])/2);
+    I[j]=(Count1[j]+Count2[j])/2;
+    ER[j]=sI[j]/I[j];
+    cout<<"Spessore= "<<x[j]<<"mm  Intensità: "<<I[j]<<" +- "<<sI[j]<<"  Err rel: "<<ER[j]<<endl;
   }
-   double y[n];
-   double sy[n];
-     for(int j=0;j<n;j++){
-       y[j]=log(I0/I[j]);
-       sy[j]=sI[j]/I[j];
-     }
+  
 
  
     // ----------------------------------------------------------------- //
@@ -55,8 +55,8 @@ void Assorbimento()
     C1->Update();
     gGraph->Fit(funz1, "RM+");
     //string udm[] = {"", "", ""};
-    //double a= funz1->GetParameter(0);
-    //double sa=funz1->GetParError(0);
+    double I0= funz1->GetParameter(0);
+    double sI0=funz1->GetParError(0);
     //double b= funz1->GetParameter(1);
     //double sb=funz1->GetParError(1);
 
@@ -64,7 +64,12 @@ void Assorbimento()
     cout << "--------------------------------------------------------------------------------------------------------" << endl;
     //.........................//
 
-
+ double y[n];
+   double sy[n];
+     for(int j=0;j<n;j++){
+       y[j]=log(I0/I[j]);
+       sy[j]=sI[j]/I[j];
+     }
 
 
     //Lineare//

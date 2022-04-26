@@ -9,11 +9,18 @@ void IntensitaSoglia()
 {
    const int n=;
    double I[] = {};
-   double Count[] = {};
+   double Count1[] = {};
+   double Count2[]={};
+   double Count[n];
+   double err[n];
    double sI[n];
    double sCount[n];
    for(int j=0;j<n;j++){
-      sCount[j]=sqrt(Count[j]);
+     sCount[j]=abs((Count1[j]-Count2[j])/2);
+      Count[j]=(Count1[j]+Count2[j])/2;
+      err[j]=sCount[j]/Count[j];
+      cout<<"Intensità= "<<I[j]<<"microA  Numero di conteggi: "<<Count[j]<<" +- "<<sCount[j]<<"  Err rel: "<<err[j]<<endl;
+      sI[j]=1;
     }
 
     // ----------------------------------------------------------------- //
@@ -33,3 +40,4 @@ void IntensitaSoglia()
     gGraph->GetYaxis()->SetTitle("Count ");
     gGraph->Draw("AP");
 }
+
