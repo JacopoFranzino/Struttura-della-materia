@@ -13,7 +13,7 @@ void Assorbimento()
   const int n=19;
   double s[]={20,20,20,20,20,20,20,20,20,20,20,20,30,40,40,40,60,80,80};
   double Count1[]={62542,39627,15168,9827,6769,5446,4488,3836,3097,2847,2465,2183,2856,3456,3023,2442,2563,2345,1906};
-  double Count2[]={62443,40030,15215,9921,6748,5545,4255,3881,3080,2886,2445,2236,2866,3447,3074,2478,2721,2422,1879};
+  double Count2[]={62443,40030,15215,9921,6748,5545,4255,3881,3080,2886,2445,2236,2866,3447,3074,2478,2721,2422,1874};
   double x[] ={0,0.1,0.25,0.35,0.5,0.6,0.75,0.85,1,1.10,1.25,1.35,1.50,1.60,1.75,2,2.5,3,3.5}; // espressi in mm
   double sx[n];
   double I[n];
@@ -55,7 +55,7 @@ void Assorbimento()
     cout << "\n\n --- Ipotesi  [0]*exp(-[1]*x) --- \n"
          << endl;
     TF1 *funz1 = new TF1("funz1", "[0]*exp(-[1]*x)", 0, 20);
-    funz1->SetRange(0.1,0.5);
+    // funz1->SetRange(0.1,0.5);
     funz1->SetParNames("I0", "mu");
     funz1->SetLineColor(50);
     funz1->SetParameters(0,62500);
@@ -76,43 +76,37 @@ void Assorbimento()
    double sy[n];
      for(int j=0;j<n;j++){
        y[j]=log(I0/I[j]);
-       sy[j]=sI[j]/I[j];
+       sy[j]=sqrt(pow(sI[j]/I[j],2)+pow(sI0/I0,2));
      }
 
 
     //Lineare//
     
      
-    TCanvas *C2 = new TCanvas("C2", "Lineare", 2000, 1000);
-    C2->SetFillColor(0);
-    C2->cd(1);
+     // TCanvas *C2 = new TCanvas("C2", "Lineare", 2000, 1000);
+     //C2->SetFillColor(0);
+     //C2->cd(1);
 
-    TGraphErrors *gGraph2 = new TGraphErrors(n, x, y, sx, sy);
-    gGraph2->SetMarkerSize(0.6);
-    gGraph2->SetMarkerStyle(21);
-    gGraph2->SetTitle("I(x)");
-    gGraph2->GetXaxis()->SetTitle("spessore  ");
-    gGraph2->GetYaxis()->SetTitle("Intensita' ");
-    gGraph2->Draw("AP");
+     // TGraphErrors *gGraph2 = new TGraphErrors(n, x, y, sx, sy);
+     //gGraph2->SetMarkerSize(0.6);
+     //gGraph2->SetMarkerStyle(21);
+     //gGraph2->SetTitle("I(x)");
+     //gGraph2->GetXaxis()->SetTitle("spessore  ");
+     //gGraph2->GetYaxis()->SetTitle("Intensita' ");
+     //gGraph2->Draw("AP");
 
     // ----------------------------------------------------------------- //
     // Fit 2
-    cout << "\n\n --- Ipotesi  [0]+[1]*x) --- \n"
-       << endl;
-    TF1 *funz2 = new TF1("funz2", "[0]+[1]*x", 0, 20);
-    funz2->SetParNames("a", "b");
-    funz2->SetLineColor(50);
-    //funz1->SetParameters();
-    C2->Update();
-    gGraph2->Fit(funz2, "RM+");
-    //string udm[] = {"", "", ""};
-    // double c= funz2->GetParameter(0);
-    //double sc=funz2->GetParError(0);
-    //double d= funz2->GetParameter(1);
-    //double sd=funz2->GetParError(1);
-
-   cout << "Chi^2:" << funz2->GetChisquare() << ", number of DoF: " << funz2->GetNDF() << " (Probability: " << funz2->GetProb() << ")." << endl;
-    cout << "--------------------------------------------------------------------------------------------------------" << endl;
+  // cout << "\n\n --- Ipotesi  [0]+[1]*x) --- \n"
+     //   << endl;
+     //TF1 *funz2 = new TF1("funz2", "[0]+[1]*x", 0, 20);
+     //funz2->SetParNames("a", "b");
+     //funz2->SetLineColor(50);
+     //C2->Update();
+     //gGraph2->Fit(funz2, "RM+");
+   
+     //cout << "Chi^2:" << funz2->GetChisquare() << ", number of DoF: " << funz2->GetNDF() << " (Probability: " << funz2->GetProb() << ")." << endl;
+     //cout << "--------------------------------------------------------------------------------------------------------" << endl;
     //.........................//
 
 
@@ -133,42 +127,71 @@ void Assorbimento()
 
     cout << "\n\n --- Ipotesi  [0]+[1]*x --- \n"
        << endl;
+    
     TF1 *funz3 = new TF1("funz3", "[0]+[1]*x", 0, 20);
     funz3->SetParNames("a", "b");
     funz3->SetLineColor(3);
-    funz3->SetRange(0.1,0.5);  //impostare il range
+    funz3->SetRange(0.1,0.4);  //impostare il range
     //funz1->SetParameters();
     C3->Update();
     gGraph3->Fit(funz3, "RM+");
-        //string udm[] = {"", "", ""};
+    //string udm[] = {"", "", ""};
     // double e= funz3->GetParameter(0);
     //double se=funz3->GetParError(0);
-    double mu1= funz3->GetParameter(1);
-    //double sf=funz3->GetParError(1);
-
+    double mu1= funz3->GetParameter(1)*10;
+    double smu1=funz3->GetParError(1)*10;
+    cout<<"Retta Verde: "<<endl;
    cout << "Chi^2:" << funz3->GetChisquare() << ", number of DoF: " << funz3->GetNDF() << " (Probability: " << funz3->GetProb() << ")." << endl;
     cout << "--------------------------------------------------------------------------------------------------------" << endl;
     //.........................//
+
+    TF1 *funz5 = new TF1("funz5", "[0]+[1]*x", 0, 20);
+    //funz3->SetParNames("a", "b");
+    funz5->SetLineColor(9);
+    funz5->SetRange(0.1,0.5);  //impostare il range
+    //funz1->SetParameters();
+    C3->Update();
+    gGraph3->Fit(funz5, "RM+");
+    //string udm[] = {"", "", ""};
+    // double e= funz3->GetParameter(0);
+    //double se=funz3->GetParError(0);
+    double mu2= funz5->GetParameter(1)*10;
+    double smu2=funz5->GetParError(1)*10;
+    cout<<"Retta Blu: "<<endl;
+   cout << "Chi^2:" << funz5->GetChisquare() << ", number of DoF: " << funz5->GetNDF() << " (Probability: " << funz5->GetProb() << ")." << endl;
+    cout << "--------------------------------------------------------------------------------------------------------" << endl;
+    //.........................//
+
+    
     TF1 *funz4 = new TF1("funz4", "[0]+[1]*x", 0, 20);
     funz4->SetParName(0,"c");
     funz4->SetParName(1,"d");
-    funz4->SetLineColor(7);
-     funz4->SetRange(1.6,4); //impostare il range
+    funz4->SetLineColor(2);
+    funz4->SetRange(1.4,3); //impostare il range
     //funz1->SetParameters();
     C3->Update();
     gGraph3->Fit(funz4, "RM+");
     //string udm[] = {"", "", ""};
     //double g= funz4->GetParameter(2);
     //double sg=funz4->GetParError(2);
-    double mu2= funz4->GetParameter(1);
-    //double sh=funz4->GetParError(3);
-
+    double mu3= funz4->GetParameter(1)*10;
+    double smu3=funz4->GetParError(1)*10;
+    cout<<"Retta rossa: "<<endl;
    cout << "Chi^2:" << funz4->GetChisquare() << ", number of DoF: " << funz4->GetNDF() << " (Probability: " << funz4->GetProb() << ")." << endl;
     cout << "--------------------------------------------------------------------------------------------------------" << endl;
     //.........................//
 
-
+    double rho=2.7;
+    cout<<"coefficiente di assorbimento:"<<endl<<"Retta verde :"<<mu1<<"+-"<<smu1<<" cm^-1"<<endl<<endl;
+    cout<<"Retta blu :"<<mu2<<"+-"<<smu2<<" cm^-1"<<endl;
+    cout<<"Retta rossa :"<<mu3<<"+-"<<smu3<<" cm^-1"<<endl;
+    cout<<endl<<endl;
     
+    cout<<"Coefficiente di assorbimento su densità: "<<endl<<endl;
+    cout<<"Retta verde :"<<mu1/rho<<"+-"<<smu1/rho<<" g*cm^2"<<endl;
+    cout<<"Retta blu :"<<mu2/rho<<"+-"<<smu2/rho<<" g*cm^2"<<endl;
+    cout<<"Retta rossa :"<<mu3/rho<<"+-"<<smu3/rho<<" g*cm^2"<<endl;
+
     
    
 }
